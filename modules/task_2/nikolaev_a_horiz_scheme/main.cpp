@@ -8,7 +8,7 @@ TEST(Horiz_Scheme_MPI, Test_Mult1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_matrix, global_vec;
-    const int n = 10, m = 10;
+    const int n = 4, m = 2;
 
     if (rank == 0) {
         global_matrix = getRandomMatrix(n, m);
