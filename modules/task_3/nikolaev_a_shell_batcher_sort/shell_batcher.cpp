@@ -39,9 +39,9 @@ std::vector<int> GetShellSortSequential(std::vector<int> array) {
     return array;
 }
 
-void compexch(int first, int second) {
-    if (first > second) std::swap(first, second);
-}
+// void compexch(int first, int second) {
+//     if (first > second) std::swap(first, second);
+// }
 
 void OddEvenMergeBatcher(std::vector<int>* array, int hi, int str, int r) {
     int step = r * 2;
