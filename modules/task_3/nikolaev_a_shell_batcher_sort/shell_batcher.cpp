@@ -56,7 +56,7 @@ void OddEvenMergeBatcher(std::vector<int>* array, int hi, int str, int r) {
     }
 }
 
-std::vector<int> MergeArray(std::vector<int>& array1, std::vector<int>& array2) {
+std::vector<int> MergeArray(const std::vector<int>& array1, const std::vector<int>& array2) {
     std::vector<int> mergeArray(array1.size() + array2.size());
     for (int i = 0; i < array1.size(); i++) {
         mergeArray[i] = array1[i];
@@ -72,14 +72,11 @@ std::vector<int> GetShellSortParallel(const std::vector<int>& array, int ArraySi
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
     const int delta = ArraySize / size;
     std::vector<int> local_array(delta);
     MPI_Scatter(array.data(), delta, MPI_INT, local_array.data(), delta, MPI_INT, 0, MPI_COMM_WORLD);
     local_array = GetShellSortSequential(local_array);
-    if(rank != 0) {
-        MPI_Send(local_array.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
-    } else {
+    if (rank == 0) {
         std::vector<int> res_array;
         MPI_Status status;
         global_array = MergeArray(global_array, local_array);
@@ -92,14 +89,19 @@ std::vector<int> GetShellSortParallel(const std::vector<int>& array, int ArraySi
                 if (size - 1 == 1) {
                     OddEvenMergeBatcher(&global_array, global_array.size(), 0, 1);
                 } else {
-                    res_array = std::vector<int>(global_array.begin() + delta * size / 2 * i, global_array.begin() + delta * size / 2 * j);
+                    res_array = std::vector<int>(global_array.begin() + delta * size / 2 * i,
+                                             global_array.begin() + delta * size / 2 * j);
                     OddEvenMergeBatcher(&res_array, res_array.size(), 0, 1);
-                    global_array.erase(global_array.begin() + delta * size / 2 * i, global_array.begin() + delta * size / 2 * j);
-                    global_array.insert(global_array.begin() + delta * size / 2 * i, res_array.begin(), res_array.end());
+                    global_array.erase(global_array.begin() + delta * size / 2 * i,
+                                             global_array.begin() + delta * size / 2 * j);
+                    global_array.insert(global_array.begin() + delta * size / 2 * i,
+                                             res_array.begin(), res_array.end());
                 }
             }
         }
         OddEvenMergeBatcher(&global_array, global_array.size(), 0, 1);
+    } else {
+        MPI_Send(local_array.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
     return global_array;
 }
