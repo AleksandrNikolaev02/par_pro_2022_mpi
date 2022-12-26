@@ -9,11 +9,11 @@ TEST(Shell_Bather_MPI, Test_Sort1) {
     const int ArraySize = 8;
     std::vector<int> array;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0) {
+    if (rank == 0) {
         array = getRandomArray(ArraySize);
     }
     std::vector<int> parallel_sort = GetShellSortParallel(array, ArraySize);
-    if(rank == 0) {
+    if (rank == 0) {
         std::vector<int> sequential_sort = GetShellSortSequential(array);
         ASSERT_EQ(sequential_sort, parallel_sort);
     }
@@ -24,11 +24,11 @@ TEST(Shell_Bather_MPI, Test_Sort2) {
     const int ArraySize = 32;
     std::vector<int> array;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0) {
+    if (rank == 0) {
         array = getRandomArray(ArraySize);
     }
     std::vector<int> parallel_sort = GetShellSortParallel(array, ArraySize);
-    if(rank == 0) {
+    if (rank == 0) {
         std::vector<int> sequential_sort = GetShellSortSequential(array);
         ASSERT_EQ(sequential_sort, parallel_sort);
     }
@@ -39,11 +39,11 @@ TEST(Shell_Bather_MPI, Test_Sort3) {
     const int ArraySize = 64;
     std::vector<int> array;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0) {
+    if (rank == 0) {
         array = getRandomArray(ArraySize);
     }
     std::vector<int> parallel_sort = GetShellSortParallel(array, ArraySize);
-    if(rank == 0) {
+    if (rank == 0) {
         std::vector<int> sequential_sort = GetShellSortSequential(array);
         ASSERT_EQ(sequential_sort, parallel_sort);
     }
@@ -54,11 +54,11 @@ TEST(Shell_Bather_MPI, Test_Sort4) {
     const int ArraySize = 256;
     std::vector<int> array;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0) {
+    if (rank == 0) {
         array = getRandomArray(ArraySize);
     }
     std::vector<int> parallel_sort = GetShellSortParallel(array, ArraySize);
-    if(rank == 0) {
+    if (rank == 0) {
         std::vector<int> sequential_sort = GetShellSortSequential(array);
         ASSERT_EQ(sequential_sort, parallel_sort);
     }
@@ -69,11 +69,11 @@ TEST(Shell_Bather_MPI, Test_Sort5) {
     const int ArraySize = 512;
     std::vector<int> array;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if(rank == 0) {
+    if (rank == 0) {
         array = getRandomArray(ArraySize);
     }
     std::vector<int> parallel_sort = GetShellSortParallel(array, ArraySize);
-    if(rank == 0) {
+    if (rank == 0) {
         std::vector<int> sequential_sort = GetShellSortSequential(array);
         ASSERT_EQ(sequential_sort, parallel_sort);
     }

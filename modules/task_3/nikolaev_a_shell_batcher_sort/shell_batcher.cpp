@@ -22,21 +22,19 @@ void PrintArray(const std::vector<int>& array) {
     for (int i = 0; i < size; i++) {
         std::cout << array[i] << " ";
     }
-    std::cout<<std::endl;
+    std::cout << std::endl;
 }
 
 std::vector<int> GetShellSortSequential(std::vector<int> array) {
     int step = array.size() / 2;
-    while (step > 0)
-    {
-    int j;
-        for (int i = step; i < array.size(); i++)
-        {
+    while (step > 0) {
+        int j;
+        for (int i = step; i < array.size(); i++) {
             int value = array[i];
             for (j = i - step; (j >= 0) && (array[j] > value); j -= step) array[j + step] = array[j];
-                array[j + step] = value;
-            }
-            step /= 2;
+            array[j + step] = value;
+        }
+        step /= 2;
     }
     return array;
 }
@@ -69,7 +67,7 @@ std::vector<int> MergeArray(std::vector<int>& array1, std::vector<int>& array2) 
     return mergeArray;
 }
 
-std::vector<int> GetShellSortParallel(std::vector<int>& array, int ArraySize) {
+std::vector<int> GetShellSortParallel(const std::vector<int>& array, int ArraySize) {
     std::vector<int> global_array;
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
