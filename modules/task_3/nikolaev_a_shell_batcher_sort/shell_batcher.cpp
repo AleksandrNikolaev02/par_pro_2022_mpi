@@ -39,20 +39,20 @@ std::vector<int> GetShellSortSequential(std::vector<int> array) {
     return array;
 }
 
-void compexch(int &first, int &second) {
+void compexch(int first, int second) {
     if (first > second) std::swap(first, second);
 }
 
-void OddEvenMergeBatcher(std::vector<int>& array, int hi, int lo, int r) {
+void OddEvenMergeBatcher(std::vector<int>* array, int hi, int str, int r) {
     int step = r * 2;
-    if (step < (hi - lo)) {
-        OddEvenMergeBatcher(array, hi, lo, step);
-        OddEvenMergeBatcher(array, hi, lo + r, step);
-        for (int i = lo + r; i < hi - r; i += step) {
-            compexch(array[i], array[i + r]);
-        }
+    if (step < (hi - str)) {
+        OddEvenMergeBatcher(array, hi, str, step);
+        OddEvenMergeBatcher(array, hi, str + r, step);
+        for (int i = str + r; i < hi - r; i += step) {
+            if ((*array)[i] > (*array)[i + r]) std::swap((*array)[i], (*array)[i + r]);
+    }
     } else {
-        compexch(array[lo], array[lo + r]);
+        if ((*array)[str] > (*array)[str + r]) std::swap((*array)[str], (*array)[str + r]);
     }
 }
 
@@ -90,16 +90,16 @@ std::vector<int> GetShellSortParallel(const std::vector<int>& array, int ArraySi
         if (size != 1) {
             for (int i = 0, j = 1; i < size / 2; i++, j++) {
                 if (size - 1 == 1) {
-                    OddEvenMergeBatcher(global_array, global_array.size(), 0, 1);
+                    OddEvenMergeBatcher(&global_array, global_array.size(), 0, 1);
                 } else {
                     res_array = std::vector<int>(global_array.begin() + delta * size / 2 * i, global_array.begin() + delta * size / 2 * j);
-                    OddEvenMergeBatcher(res_array, res_array.size(), 0, 1);
+                    OddEvenMergeBatcher(&res_array, res_array.size(), 0, 1);
                     global_array.erase(global_array.begin() + delta * size / 2 * i, global_array.begin() + delta * size / 2 * j);
                     global_array.insert(global_array.begin() + delta * size / 2 * i, res_array.begin(), res_array.end());
                 }
             }
         }
-        OddEvenMergeBatcher(global_array, global_array.size(), 0, 1);
+        OddEvenMergeBatcher(&global_array, global_array.size(), 0, 1);
     }
     return global_array;
 }
