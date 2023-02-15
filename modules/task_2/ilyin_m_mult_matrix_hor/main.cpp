@@ -8,7 +8,7 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A, B;
-    const int n = 2, m = 2;
+    const int n = 6, m = 6;
 
     if (rank == 0) {
         A = getRandomMatrix(n, m);
@@ -26,7 +26,7 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A, B;
-    const int n = 4, m = 4;
+    const int n = 10, m = 10;
 
     if (rank == 0) {
         A = getRandomMatrix(n, m);
@@ -44,7 +44,7 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A, B;
-    const int n = 10, m = 10;
+    const int n = 12, m = 12;
 
     if (rank == 0) {
         A = getRandomMatrix(n, m);
