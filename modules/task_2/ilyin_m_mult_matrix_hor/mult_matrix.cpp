@@ -30,7 +30,7 @@ std::vector<int> transposeMatrix(const std::vector<int> &matrix, int n, int m) {
     return vec;
 }
 
-std::vector<int> getMultMatrixSequential(std::vector<int>& pMatrix1, std::vector<int>& pMatrix2, int n, int m) {
+std::vector<int> getMultMatrixSequential(const std::vector<int>& pMatrix1, const std::vector<int>& pMatrix2, int n, int m) {
     std::vector<int> pResult(n * m);
     std::vector<int> A, B;
     A = pMatrix1;
@@ -43,7 +43,7 @@ std::vector<int> getMultMatrixSequential(std::vector<int>& pMatrix1, std::vector
             }
             k++;
         }
-    } 
+    }
     return pResult;
 }
 
@@ -57,7 +57,7 @@ void printMatrix(std::vector<int> vec) {
 
 std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vector<int>& B, int n, int m) {
     std::vector<int> global_vec(m*n);
-    int size, rank; 
+    int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -73,8 +73,8 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
         }
     } else {
         int tmp = 0;
-        for(int i = 0; i < size; i++) {
-        if(i != size - 1) {
+        for (int i = 0; i < size; i++) {
+        if (i != size - 1) {
             constant[i] = delta * m;
             tmp += constant[i];
             recvcounts[i] = constant[i];
@@ -96,7 +96,7 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
         }
     }
     int local_size_vec = 0;
-    if(rank != 0) {
+    if (rank != 0) {
         MPI_Status status1;
         MPI_Recv(&local_size_vec, 1, MPI_INT, 0, 2, MPI_COMM_WORLD, &status1);
     }
@@ -112,7 +112,7 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
     }
     std::vector<int> local_value = getMultMatrixSequential(local_row, local_vec, n, m);
     local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
-    MPI_Gatherv(local_value.data(), local_value.size(), MPI_INT, global_vec.data(), recvcounts, displs, 
+    MPI_Gatherv(local_value.data(), local_value.size(), MPI_INT, global_vec.data(), recvcounts, displs,
                                         MPI_INT, 0, MPI_COMM_WORLD);
     return global_vec;
 }
