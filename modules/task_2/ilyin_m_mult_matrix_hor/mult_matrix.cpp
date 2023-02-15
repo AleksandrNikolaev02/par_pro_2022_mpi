@@ -112,8 +112,9 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
         MPI_Recv(local_vec.data(), m * n, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
     }
     std::vector<int> local_value = getMultMatrixSequential(local_row, local_vec, n, m);
-    local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
-    MPI_Gatherv(local_value.data(), local_value.size(), MPI_INT, global_vec.data(), recvcounts, displs,
+    std::vector<int> test = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
+    //local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
+    MPI_Gatherv(test.data(), test.size(), MPI_INT, global_vec.data(), recvcounts, displs,
                                         MPI_INT, 0, MPI_COMM_WORLD);
     return global_vec;
 }
