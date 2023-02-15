@@ -33,7 +33,7 @@ std::vector<int> transposeMatrix(const std::vector<int> &matrix, int n, int m) {
 std::vector<int> getMultMatrixSequential(const std::vector<int>& pMatrix1,
                             const std::vector<int>& pMatrix2, int n, int m) {
     std::vector<int> pResult(n * m);
-    std::vector<int> A, B;
+    std::vector<int> A(n * m), B(n * m);
     A = pMatrix1;
     B = transposeMatrix(pMatrix2, n, m);
     int k = 0;
