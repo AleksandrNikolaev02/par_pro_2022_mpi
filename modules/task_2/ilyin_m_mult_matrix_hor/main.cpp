@@ -26,7 +26,7 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A, B;
-    const int n = 3, m = 3;
+    const int n = 4, m = 4;
 
     if (rank == 0) {
         A = getRandomMatrix(n, m);
