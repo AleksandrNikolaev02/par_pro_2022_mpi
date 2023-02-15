@@ -24,7 +24,7 @@ std::vector<int> transposeMatrix(const std::vector<int> &matrix, int n, int m) {
     int k = 0;
     for (int j = 0; j < m; j++) {
         for (int i = 0; i < n; i++) {
-            vec[k++] = matrix[i * m + j];
+            vec[k++] += matrix[i * m + j];
         }
     }
     return vec;
