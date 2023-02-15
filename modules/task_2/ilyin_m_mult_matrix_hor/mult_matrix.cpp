@@ -40,8 +40,7 @@ std::vector<int> getMultMatrixSequential(const std::vector<int>& pMatrix1,
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             for (int t = 0; t < m; t++) {
-                // pResult[k] += A[i * n + t] * B[m * j + t];
-                pResult.push_back(A[i * n + t] * B[m * j + t]);
+                pResult[k] += A[i * n + t] * B[m * j + t];
             }
             k++;
         }
