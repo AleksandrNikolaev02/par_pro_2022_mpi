@@ -40,7 +40,8 @@ std::vector<int> getMultMatrixSequential(const std::vector<int>& pMatrix1,
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             for (int t = 0; t < m; t++) {
-                pResult[k] += A[i * n + t] * B[m * j + t];
+                // pResult[k] += A[i * n + t] * B[m * j + t];
+                pResult.push_back(A[i * n + t] * B[m * j + t]);
             }
             k++;
         }
@@ -113,7 +114,7 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
     }
     std::vector<int> local_value = getMultMatrixSequential(local_row, local_vec, n, m);
     std::vector<int> test = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
-    //local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
+    // local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
     MPI_Gatherv(test.data(), test.size(), MPI_INT, global_vec.data(), recvcounts, displs,
                                         MPI_INT, 0, MPI_COMM_WORLD);
     return global_vec;
