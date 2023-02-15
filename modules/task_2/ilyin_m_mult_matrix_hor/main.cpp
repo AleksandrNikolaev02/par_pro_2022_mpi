@@ -14,7 +14,7 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult1) {
         A = getRandomMatrix(n, m);
         B = getRandomMatrix(n, m);
     }
-
+    std::cout << "2134" << cout << endl;
     std::vector<int> parallel_mult = getMultMatrixParallel(A, B, n, m);
     if (rank == 0) {
         std::vector<int> sequential_mult = getMultMatrixSequential(A, B, n, m);
