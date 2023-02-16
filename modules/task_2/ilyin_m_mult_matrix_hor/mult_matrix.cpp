@@ -63,7 +63,7 @@ std::vector<int> getMultMatrixSequential2(const std::vector<int>& pMatrix1,
             }
             k++;
         }
-    } 
+    }
     return pResult;
 }
 
