@@ -48,6 +48,25 @@ std::vector<int> getMultMatrixSequential(const std::vector<int>& pMatrix1,
     return pResult;
 }
 
+std::vector<int> getMultMatrixSequential2(const std::vector<int>& pMatrix1,
+                            const std::vector<int>& pMatrix2, int n, int m, int start, int finish) {
+    std::vector<int> pResult((finish - start) * m);
+    std::vector<int> A, B;
+    A = pMatrix1;
+    B = transposeMatrix(pMatrix2, n, m);
+    const int size_matrix = pMatrix1.size();
+    int k = 0;
+    for (int i = 0; i < size_matrix / n; i++) {
+        for (int j = 0; j < m; j++) {
+            for (int t = 0; t < m; t++) {
+                pResult[k] += A[i * n + t] * B[m * j + t];
+            }
+            k++;
+        }
+    } 
+    return pResult;
+}
+
 void printMatrix(std::vector<int> vec) {
     const int size = vec.size();
     for (int i = 0; i < size; i++) {
@@ -66,11 +85,15 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
     int* constant = new int[size];
     int* displs = new int[size];
     int* recvcounts = new int[size];
+    int* start = new int[size];
+    int* finish = new int[size];
     if (size >= n) {
         for (int i = 0; i < size; i++) {
             constant[i] = m;
             recvcounts[i] = 1 * m;
             displs[i] = m * i;
+            start[i] = i;
+            finish[i] = i + 1;
         }
     } else {
         int tmp = 0;
@@ -80,10 +103,14 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
             tmp += constant[i];
             recvcounts[i] = constant[i];
             displs[i] = i * recvcounts[i];
+            start[i] = i * delta;
+            finish[i] = (i + 1) * delta;
         } else {
             constant[i] = n * m - tmp;
             recvcounts[i] = constant[i];
             displs[i] = i * recvcounts[i-1];
+            start[i] = 0;
+            finish[i] = n;
             }
         }
     }
@@ -111,7 +138,7 @@ std::vector<int> getMultMatrixParallel(const std::vector<int>& A, const std::vec
         MPI_Recv(local_row.data(), local_size_vec, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
         MPI_Recv(local_vec.data(), m * n, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
     }
-    std::vector<int> local_value = getMultMatrixSequential(local_row, local_vec, n, m);
+    std::vector<int> local_value = getMultMatrixSequential2(local_row, local_vec, n, m, start[rank], finish[rank]);
     std::vector<int> test = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
     // local_value = std::vector<int>(local_value.begin(), local_value.begin() + recvcounts[rank]);
     MPI_Gatherv(test.data(), test.size(), MPI_INT, global_vec.data(), recvcounts, displs,

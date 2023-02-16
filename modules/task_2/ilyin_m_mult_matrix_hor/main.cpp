@@ -8,13 +8,12 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A, B;
-    const int n = 6, m = 6;
+    const int n = 4, m = 4;
 
     if (rank == 0) {
         A = getRandomMatrix(n, m);
         B = getRandomMatrix(n, m);
     }
-    std::cout << "2134" << std::endl;
     std::vector<int> parallel_mult = getMultMatrixParallel(A, B, n, m);
     if (rank == 0) {
         std::vector<int> sequential_mult = getMultMatrixSequential(A, B, n, m);
