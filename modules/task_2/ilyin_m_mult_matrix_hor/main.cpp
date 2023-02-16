@@ -17,8 +17,6 @@ TEST(Mult_Matrix_Hor_MPI, Test_Mult1) {
     std::vector<int> parallel_mult = getMultMatrixParallel(A, B, n, m);
     if (rank == 0) {
         std::vector<int> sequential_mult = getMultMatrixSequential(A, B, n, m);
-        printMatrix(parallel_mult);
-        printMatrix(sequential_mult);
         ASSERT_EQ(sequential_mult, parallel_mult);
     }
 }
